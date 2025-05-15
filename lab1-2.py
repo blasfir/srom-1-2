@@ -1,5 +1,4 @@
 import time
-
 #беззнакові із довільною довжиною в форматі найменшої значущої цифри(little endian)
 w = 32
 base = 2 ** 32
@@ -265,11 +264,16 @@ def longModPowerBarrett(A, B, N):
 
 k = 5
 c = 100
-g = '0x72dbd34d03ad2be472af5faf19391c4a8'
-f = '0xd843387256f279383f067845aa'
-m = '0xc2289f575'
-d = '0xc3333905' 
-s =  [1, 0, 0, 1, 0, 0, 1, 1, 1]  
+g = '0xf72f0997fd3fd17931e014ad1d5d4db96a02588d15aaee9cb769e0dcdfdb69bf77e6a98eeab67c11838bea11a81ab45d02b54db21b96a0b0af9c2fd09a9ff4ef3a86bb7d6a17d12af09afc551aa644ba1fa32ea91673aba7d7cdc10a5e8c3c48a77ff30ae93c81ed12b5561cc70715a4639f87bc0725ab487a029b3daef12244f423613cb43806ddfe7c0cc1c6d51d161fb5472a434a3adb633af5816c3c0c241459df8a4656e420f8e23188fe7fc38a82a3928e90699114d62a635957de794a85df4d2a41933f7e01a422a5cce917e50cb35456db7f334e2998287cae20731406dbc33a6d51c5e22d466cbe2b769af76797548b1702556df52a68097e50c42b'
+f = '0x2522d4428d027178b75b4b1f17f7a2dfb8bd6cae86e9d81b04a9defaa7eecd7809ec882fbe880ceb0cd53866cc1d5424e3a83a828f80d350b13c5a132fb9f4e46bc0087150be3f1aa5d4b3a899fffda944f0f5553ebb7418222b0ca2a6aefdc58cb6d16d04b6deafae0d6e7eaa2bc757667b923ce6f642fa33158391f0d0cd2f473b9dd266e91539b77dd42ffb25a86b9335071b3a4a7adce833a0b7acdcd01b8e58646af45ee8e28dbeb9414b1fd4cfac0819282f13d6a7508f4fc6540a68b2af828143e0856dfc2ab93a0254b4beb5cffc291ca4b540a3cf47dfb6e1830fb1d1529520bafcdfa9a46233187b1c47e765df4a26c69af717e75044b038c537cf'
+m = '0x7d33390b4beb86348eef5d995506d03aa10718105e142814492ec01eff9facdd197ac451b624a5b7e35712d0caf3567b15944ed95099d3bc1c6b2e0da7c426250b7524cb1c96706250fc39d4a41664bea073695fb89e37d30c42c73e7ade345538c3e7279d33750f9fb1f94e6d53aafa0afa0c4d9c2e21a97e456ea82cc6a83fe6ffa5a5c99156990b9c1d605c105847b0c33d603f6fd8cc2a0deed7ca5eab92e838c10c930d4c2c04f7c8fab88d52c77391ddfdf25b8ac5a3f692331cc47d329b4e0100bf8b3f486f65c03b16af17efcbe53ab6b1eae18eaa185bcfb8f3e91321de981baa83efeaf753bbbc1865eb9dfbd4b67bf30af9c4e024f870e2523ca4'
+d = '0x6d33390b4beb86348eef5d995506d03aa10718105e142814492ec01eff9facdd197ac451b624a5b7e35712d0caf3567b15944ed95099d3bc1c6b2e0da7c426250b7524cb1c96706250fc39d4a41664bea073695fb89e37d30c42c73e7ade345538c3e7279d33750f9fb1f94e6d53aafa0afa0c4d9c2e21a97e456ea82cc6a83fe6ffa5a5c99156990b9c1d605c105847b0c33d603f6fd8cc2a0deed7ca5eab92e838c10c930d4c2c04f7c8fab88d52c77391ddfdf25b8ac5a3f692331cc47d329b4e0100bf8b3f486f65c03b16af17efcbe53ab6b1eae18eaa185bcfb8f3e91321de981baa83efeaf753bbbc1865eb9dfbd4b67bf30af9c4e024f870e2523ca4'
+#g = '0x72dbd34d03ad2be472af5faf19391c4a8'
+#f = '0xd843387256f279383f067845aa'
+#m = '0xc2289f575'
+#d = '0xc3333905' 
+s =  [1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+t =  [1, 0, 1]
 gg = hexTo2_32(g)
 ff = hexTo2_32(f)
 mm = hexTo2_32(m)
@@ -300,7 +304,7 @@ print(longModSubBarrett(gg, ff, mm))
 print(longModMulBarrett(gg, ff, mm))
 print(longModSquarePowerBarrett(gg, mm))
 print(longModPowerBarrett(gg, s, mm))
-print(longPowerWindow(dd, s))
+print(longPowerWindow(gg, t))
 sumGF = longAdd(gg, ff)
 sumGFmulM = longMul(sumGF, mm)
 mulMsumGF = longMul(mm, sumGF)
@@ -337,8 +341,18 @@ if mMulGC == sumGGGGG:
     print('Success')
 else:
     print('Error')
-'''def test3(a, n):
-    for i in range(mm):'''
+
+if longCmp(gcd(ff, mm), [1]) == 0:
+    phiN = longSub(mm, [1])
+    result = longModPowerBarrett(ff, phiN, mm)
+    if result == [1]:
+        print("Success")
+    else:
+        print("Error")
+else:
+    print("Числа не є взаємно простими")
+
+
 
 def timeSearch(f, *args, repeats=10):
     start = time.perf_counter()
@@ -360,7 +374,7 @@ avg4 = timeSearch(longMul, gg, ff)
 print(f"Середній час роботи longMul: {avg4:.10f} сек")
 avg5 = timeSearch(longDivMod, gg, ff)
 print(f"Середній час роботи longDivMod: {avg5:.10f} сек")
-avg6 = timeSearch(longPowerWindow, dd, s)
+avg6 = timeSearch(longPowerWindow, gg, t)
 print(f"Середній час роботи longPowerWindow: {avg6:.10f} сек")
 avg7 = timeSearch(gcd, gg, ff)
 print(f"Середній час роботи gcd: {avg7:.10f} сек")
