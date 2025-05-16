@@ -100,7 +100,7 @@ def longAdd(A, B):
     if carry != 0:    
         C.append(carry)
     return deleteExtraZeros(C)
-    
+
 def longSub(A, B):
     A, B = toTheSameLength(A, B)
     C = []
@@ -229,11 +229,21 @@ def barrettReduction(X, N):
         r = deleteExtraZeros(r)    
     return r
 
-def longModAddBarrett(a, b, n):
+def longModAddBarrett2(a, b, n):
     a = barrettReduction(a, n)
     b = barrettReduction(b, n)
     sum = longAdd(a, b)
     return barrettReduction(sum, n)
+
+def longModAddBarrett(num1, num2, mod):
+    num1, num2 = toTheSameLength(num1, num2)
+    sum = longAdd(num1, num2)
+    while sum and sum[-1] == 0:
+        sum.pop()
+    res = barrettReduction(sum, mod)
+    while res and res[-1] == 0:
+        res.pop()
+    return res
 
 def longModSubBarrett(a, b, n):
     if longCmp(a, b) < 0:
@@ -262,49 +272,87 @@ def longModPowerBarrett(A, B, N):
         A = longModSquarePowerBarrett(A, N)
     return C
 
+def words32_to_bit_array(words):
+    bit_array = []
+    for word in words:
+        bits = [(word >> i) & 1 for i in range(32)]
+        bit_array.extend(bits)
+    return bit_array
+
+
 k = 5
 c = 100
-g = '0xf7f1f2f11101997123fd31fd17931e014ad1d5d4db1f17f17a2dfb8bd6c1ae86e9d181b0b76f9e0dcdfdb69b1f771fe6a98e1feab61c11f838bea6f611a81ab6645d0662b54db21b96a0b0af9c2fd09a9ff4ef3a86bb7d6a17d12af09afc551aa644ba1fa32ea91673aba7d7cdc10a5e8c3c48a77ff30ae93c81ed12b5561cc70715a4639f87bc0725ab487a029b3daef12244f423613cb43806ddfe7c0cc1c6d51d161fb5472a434a3adb633af5816c3c0c241459df8a4656e420f8e23188fe7fc38a82a3928e90699114d62a635957de794a85df4d2a41933f7e01a422a5cce917e50cb35456db7f334e2998287cae20731406dbc33a6d51c5e22d466cbe2b'
-f = '0xb1125122d769bf716797541b8b17bb02b5156df52ab68091e505c42bb75b14b1bfb7f7a2dfb811bd6cae86e9d81b041a9def1aa7eecd7809ec882fbe880ceb0cd53866cc1d5424e3a83a828f80d350b13c5a132fb9f4e46bc0087150be3f1aa5d4b3a899fffda944f0f5553ebb7418222b0ca2a6aefdc58cb6d16d04b6deafae0d6e7eaa2bc757667b923ce6f642fa33158391f0d0cd2f473b9dd266e91539b77dd42ffb25a86b9335071b3a4a7adce833a0b7acdcd01b8e58646af45ee8e28dbeb9414b1fd4cfac0819282f13d6a7508f4fc6540a68b2af828143e0856dfc2ab93a0254b4bbeb5bcffc291bca4b54b0a3cf4b7dfb6eb1830fb1d1529520bafc'
-m = '0x52341324152525252fff5454595506d03aa10718105e142814492ec01eff9facdd197ac451b624a5b7e35712d0caf3567b15944ed95099d3bc1c6b2e0da7c426250b7524cb1c96706250fc39d4a41664bea073695fb89e37d30c42c73e7ade345538c3e7279d33750f9fb1f94e6d53aafa0afa0c4d9c2e21a97e456ea82cc6a83fe6ffa5a5c99156990b9c1d605c105847b0c33d603f6fd8cc2a0deed7ca5eab92e838c10c930d4c2c04f7c8fab88d52c77391ddfdf25b8ac5a3f692331cc47d329b4e0100bf8b3f486f65c03b16af17efcbe53ab6b1eae18eaa185bcfb8f3e91321de981baa83efeaf753bbbc1865eb9dfbd4b67bf30af9c4e024f870e2523c'
+#g = '0x70307b356ca65d93e9aba1a011901a8f858da76cac9995519cc5287887fdfa8b114da61f5b3f7e0bf02a3a96d3d3711f6b8f3f7ee4387fcda20d52ddacc4cfa72cd98b6b7360d037a7c8325cc25e7450ed4eb4e7c3d75a567f982584a438028b20397fc3f0c66e6682559d669fb22d12ca72c82965701370ee6c9e556c897569'
+#f = '0x37293d9cf232ebcbf2bfafed458903bbc8f02f9d3083bb5dc405cc0f659e833fa90d597bc79c4396fad89e16f655410de3c54caba4b2a96cf6555a05b5b6d93018b2636169522b048ebe7563e42ee2307700c87ab2935dab71431a70e34f96f46abba42cb7cf8ab6c97f1d636b2216641063c305291639a377dcc0e4af8f5e5d'
+#m = '0x54519ca8fba424765f1b795e4ddbbc89e022c84ded4523d54a7fb881097305a196fc85b6f4f765a97d3ff30af17824a6d6dc2a91d181065df345ceb72144ea7d310563c5b72c155850617102b3e1179b942dfc05303e314c8649698c26102f4bab2b1444a08d215e60c561ff47bc14da6a5895bbdd3b473575afadbb15d962f5'
+g = '0x80307b356ca65d93e9aba1a011901a8f858da76cac9995519cc5287887fdfa8b114da61f5b3f7e0bf02a3a96d3d3711f6b8f3f7ee4387fcda20d52ddacc4cfa72cd98b6b7360d037a7c8325cc25e7450ed4eb4e7c3d75a567f982584a438028b20397fc3f0c66e6682559d669fb22d12ca72c82965701370ee6c9e556c897569'
+f = '0x47293d9cf232ebcbf2bfafed458903bbc8f02f9d3083bb5dc405cc0f659e833fa90d597bc79c4396fad89e16f655410de3c54caba4b2a96cf6555a05b5b6d93018b2636169522b048ebe7563e42ee2307700c87ab2935dab71431a70e34f96f46abba42cb7cf8ab6c97f1d636b2216641063c305291639a377dcc0e4af8f5e5d'
+m = '0xa4519ca8fba424765f1b795e4ddbbc89e022c84ded4523d54a7fb881097305a196fc85b6f4f765a97d3ff30af17824a6d6dc2a91d181065df345ceb72144ea7d310563c5b72c155850617102b3e1179b942dfc05303e314c8649698c26102f4bab2b1444a08d215e60c561ff47bc14da6a5895bbdd3b473575afadbb15d962f5'
 d = '0x12341324152525252fff5454595506d03aa10718105e142814492ec01eff9facdd197ac451b624a5b7e35712d0caf3567b15944ed95099d3bc1c6b2e0da7c426250b7524cb1c96706250fc39d4a41664bea073695fb89e37d30c42c73e7ade345538c3e7279d33750f9fb1f94e6d53aafa0afa0c4d9c2e21a97e456ea82cc6a83fe6ffa5a5c99156990b9c1d605c105847b0c33d603f6fd8cc2a0deed7ca5eab92e838c10c930d4c2c04f7c8fab88d52c77391ddfdf25b8ac5a3f692331cc47d329b4e0100bf8b3f486f65c03b16af17efcbe53ab6b1eae18eaa185bcfb8f3e91321de981baa83efeaf753bbbc1865eb9dfbd4b67bf30af9c4e024f870e2523c'
 #g = '0x72dbd34d03ad2be472af5faf19391c4a8'
 #f = '0xd843387256f279383f067845aa'
 #m = '0xc2289f575'
-#d = '0xc3333905' 
-s =  [1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+#d = '0xc3333905'
+ss =  [1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 t =  [1, 0, 1]
 gg = hexTo2_32(g)
 ff = hexTo2_32(f)
 mm = hexTo2_32(m)
 dd = hexTo2_32(d)
 cc = hexTo2_32(hex(c))
-gf = longAdd(gg, ff)
-ggff = longSub(gg, ff)
+#print('longAdd: ' + base2_32toHex(longAdd(gg, ff)))
+#print('longSub: ' + base2_32toHex(longSub(gg, ff)))
+#print('longMul: ' + base2_32toHex(longMul(gg, ff)))
+#print('longDivMod: ' + base2_32toHex(longDivMod(gg, ff)[0]))
+#print('Остача від ділення longDivMod: ' + base2_32toHex(longDivMod(gg, ff)[1]))
+#print('longPowerWindow: ' + base2_32toHex(longPowerWindow(gg, ff)))
+print()
+print('gcd: ' + base2_32toHex(gcd(gg, ff)))#ok
+print()
+print('lcm: ' + base2_32toHex(lcm(gg, ff)))#ok
+print()
+print('barrettReduction: ' + base2_32toHex(barrettReduction(gg, ff)))#ok
+print()
+print('longModAddBarrett: ' + base2_32toHex(longModAddBarrett(gg, ff, mm)))
+print()
+print('longModSubBarrett: ' + base2_32toHex(longModSubBarrett(gg, ff, mm)))#ok
+print()
+print('longModMulBarrett: ' + base2_32toHex(longModMulBarrett(gg, ff, mm)))
+print()
+print('longModSquarePowerBarrett: ' + base2_32toHex(longModSquarePowerBarrett(gg, mm)))
+print()
+print('longModPowerBarrett: ' + base2_32toHex(longModPowerBarrett(gg, words32_to_bit_array(ff), mm)))
+
+
+'''gf = base2_32toHex(longAdd(gg, ff))
+ggff = base2_32toHex(longSub(gg, ff))
 gggfff = longCmp(gg, ff)
-gk = longMulOneDigit(gg, k)
-ggggffff = longMul(gg, ff)
-gggggfffff = longDivMod(gg, ff)
-ggggggffffff = gcd(gg, ff)
-gggggggfffffff = lcm(gg, ff)
+#gk = longMulOneDigit(gg, k)
+ggggffff = base2_32toHex(longMul(gg, ff))
+gggggfffff = base2_32toHex(longDivMod(gg, ff)[0])
+gggggfffff2 = base2_32toHex(longDivMod(gg, ff)[1])
+ggggggffffff = base2_32toHex(gcd(gg, ff))
+gggggggfffffff = base2_32toHex(lcm(gg, ff))
 print(gg)
 print(ff)
 print(gf)
 print(ggff)
 print(gggfff)
-print(gk)
+#print(gk)
 print(ggggffff)
 print(gggggfffff)
+print(gggggfffff2)
 print(ggggggffffff)
 print(gggggggfffffff)
-print(base2_32toHex(ggggffff))
-print(barrettReduction(gg, ff))
-print(longModAddBarrett(gg, ff, mm))
-print(longModSubBarrett(gg, ff, mm))
-print(longModMulBarrett(gg, ff, mm))
-print(longModSquarePowerBarrett(gg, mm))
-print(longModPowerBarrett(gg, s, mm))
-print(longPowerWindow(gg, t))
+#print(base2_32toHex(ggggffff))
+#print(barrettReduction(gg, ff))
+print(base2_32toHex(longModAddBarrett(gg, ff, mm)))
+print(base2_32toHex(longModSubBarrett(gg, ff, mm)))
+print(base2_32toHex(longModMulBarrett(gg, ff, mm)))
+print(base2_32toHex(longModSquarePowerBarrett(gg, mm)))
+#print(base2_32toHex(longModPowerBarrett(gg, s, mm)))
+#print(longPowerWindow(gg, t))'''
+'''
 sumGF = longAdd(gg, ff)
 sumGFmulM = longMul(sumGF, mm)
 mulMsumGF = longMul(mm, sumGF)
@@ -389,4 +437,4 @@ print(f"Середній час роботи longModMulBarrett: {avg11:.10f} с�
 avg12 = timeSearch(longModSquarePowerBarrett, gg, mm)
 print(f"Середній час роботи longModSquarePowerBarrett: {avg12:.10f} сек")
 avg13 = timeSearch(longModPowerBarrett, gg, s, ff)
-print(f"Середній час роботи longModPowerBarrett: {avg13:.10f} сек")
+print(f"Середній час роботи longModPowerBarrett: {avg13:.10f} сек")'''
