@@ -263,6 +263,7 @@ def longModSquarePowerBarrett(x, n):
     return barrettReduction(s, n)
 
 def longModPowerBarrett(A, B, N):
+    B = words32_to_bit_array(B)
     C = [1]
     if longCmp(A, N) > 0:
         A = barrettReduction(A, N)
@@ -280,26 +281,26 @@ def words32_to_bit_array(words):
     return bit_array
 
 
-k = 5
-c = 100
+#k = 5
+#c = 100
 #g = '0x70307b356ca65d93e9aba1a011901a8f858da76cac9995519cc5287887fdfa8b114da61f5b3f7e0bf02a3a96d3d3711f6b8f3f7ee4387fcda20d52ddacc4cfa72cd98b6b7360d037a7c8325cc25e7450ed4eb4e7c3d75a567f982584a438028b20397fc3f0c66e6682559d669fb22d12ca72c82965701370ee6c9e556c897569'
 #f = '0x37293d9cf232ebcbf2bfafed458903bbc8f02f9d3083bb5dc405cc0f659e833fa90d597bc79c4396fad89e16f655410de3c54caba4b2a96cf6555a05b5b6d93018b2636169522b048ebe7563e42ee2307700c87ab2935dab71431a70e34f96f46abba42cb7cf8ab6c97f1d636b2216641063c305291639a377dcc0e4af8f5e5d'
 #m = '0x54519ca8fba424765f1b795e4ddbbc89e022c84ded4523d54a7fb881097305a196fc85b6f4f765a97d3ff30af17824a6d6dc2a91d181065df345ceb72144ea7d310563c5b72c155850617102b3e1179b942dfc05303e314c8649698c26102f4bab2b1444a08d215e60c561ff47bc14da6a5895bbdd3b473575afadbb15d962f5'
 g = '0x80307b356ca65d93e9aba1a011901a8f858da76cac9995519cc5287887fdfa8b114da61f5b3f7e0bf02a3a96d3d3711f6b8f3f7ee4387fcda20d52ddacc4cfa72cd98b6b7360d037a7c8325cc25e7450ed4eb4e7c3d75a567f982584a438028b20397fc3f0c66e6682559d669fb22d12ca72c82965701370ee6c9e556c897569'
 f = '0x47293d9cf232ebcbf2bfafed458903bbc8f02f9d3083bb5dc405cc0f659e833fa90d597bc79c4396fad89e16f655410de3c54caba4b2a96cf6555a05b5b6d93018b2636169522b048ebe7563e42ee2307700c87ab2935dab71431a70e34f96f46abba42cb7cf8ab6c97f1d636b2216641063c305291639a377dcc0e4af8f5e5d'
 m = '0xa4519ca8fba424765f1b795e4ddbbc89e022c84ded4523d54a7fb881097305a196fc85b6f4f765a97d3ff30af17824a6d6dc2a91d181065df345ceb72144ea7d310563c5b72c155850617102b3e1179b942dfc05303e314c8649698c26102f4bab2b1444a08d215e60c561ff47bc14da6a5895bbdd3b473575afadbb15d962f5'
-d = '0x12341324152525252fff5454595506d03aa10718105e142814492ec01eff9facdd197ac451b624a5b7e35712d0caf3567b15944ed95099d3bc1c6b2e0da7c426250b7524cb1c96706250fc39d4a41664bea073695fb89e37d30c42c73e7ade345538c3e7279d33750f9fb1f94e6d53aafa0afa0c4d9c2e21a97e456ea82cc6a83fe6ffa5a5c99156990b9c1d605c105847b0c33d603f6fd8cc2a0deed7ca5eab92e838c10c930d4c2c04f7c8fab88d52c77391ddfdf25b8ac5a3f692331cc47d329b4e0100bf8b3f486f65c03b16af17efcbe53ab6b1eae18eaa185bcfb8f3e91321de981baa83efeaf753bbbc1865eb9dfbd4b67bf30af9c4e024f870e2523c'
+#d = '0x12341324152525252fff5454595506d03aa10718105e142814492ec01eff9facdd197ac451b624a5b7e35712d0caf3567b15944ed95099d3bc1c6b2e0da7c426250b7524cb1c96706250fc39d4a41664bea073695fb89e37d30c42c73e7ade345538c3e7279d33750f9fb1f94e6d53aafa0afa0c4d9c2e21a97e456ea82cc6a83fe6ffa5a5c99156990b9c1d605c105847b0c33d603f6fd8cc2a0deed7ca5eab92e838c10c930d4c2c04f7c8fab88d52c77391ddfdf25b8ac5a3f692331cc47d329b4e0100bf8b3f486f65c03b16af17efcbe53ab6b1eae18eaa185bcfb8f3e91321de981baa83efeaf753bbbc1865eb9dfbd4b67bf30af9c4e024f870e2523c'
 #g = '0x72dbd34d03ad2be472af5faf19391c4a8'
 #f = '0xd843387256f279383f067845aa'
 #m = '0xc2289f575'
 #d = '0xc3333905'
-ss =  [1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-t =  [1, 0, 1]
+#ss =  [1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+#t =  [1, 0, 1]
 gg = hexTo2_32(g)
 ff = hexTo2_32(f)
 mm = hexTo2_32(m)
-dd = hexTo2_32(d)
-cc = hexTo2_32(hex(c))
+#dd = hexTo2_32(d)
+#cc = hexTo2_32(hex(c))
 #print('longAdd: ' + base2_32toHex(longAdd(gg, ff)))
 #print('longSub: ' + base2_32toHex(longSub(gg, ff)))
 #print('longMul: ' + base2_32toHex(longMul(gg, ff)))
@@ -307,21 +308,21 @@ cc = hexTo2_32(hex(c))
 #print('Остача від ділення longDivMod: ' + base2_32toHex(longDivMod(gg, ff)[1]))
 #print('longPowerWindow: ' + base2_32toHex(longPowerWindow(gg, ff)))
 print()
-print('gcd: ' + base2_32toHex(gcd(gg, ff)))#ok
+print('gcd: ' + base2_32toHex(gcd(gg, ff)))
 print()
-print('lcm: ' + base2_32toHex(lcm(gg, ff)))#ok
+print('lcm: ' + base2_32toHex(lcm(gg, ff)))
 print()
-print('barrettReduction: ' + base2_32toHex(barrettReduction(gg, ff)))#ok
+print('barrettReduction: ' + base2_32toHex(barrettReduction(gg, ff)))
 print()
 print('longModAddBarrett: ' + base2_32toHex(longModAddBarrett(gg, ff, mm)))
 print()
-print('longModSubBarrett: ' + base2_32toHex(longModSubBarrett(gg, ff, mm)))#ok
+print('longModSubBarrett: ' + base2_32toHex(longModSubBarrett(gg, ff, mm)))
 print()
 print('longModMulBarrett: ' + base2_32toHex(longModMulBarrett(gg, ff, mm)))
 print()
 print('longModSquarePowerBarrett: ' + base2_32toHex(longModSquarePowerBarrett(gg, mm)))
 print()
-print('longModPowerBarrett: ' + base2_32toHex(longModPowerBarrett(gg, words32_to_bit_array(ff), mm)))
+print('longModPowerBarrett: ' + base2_32toHex(longModPowerBarrett(gg, ff, mm)))
 
 
 '''gf = base2_32toHex(longAdd(gg, ff))
